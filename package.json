@@ -1,0 +1,19 @@
+{
+  "name": "echothreshold",
+  "version": "1.0.0",
+  "description": "«Рубеж Эха» — браузерная Tower Defense по мастер-промпту (5 карт, 12 башен, хроники/кредиты)",
+  "private": true,
+  "scripts": {
+    "start": "npx --yes serve -l 3000 .",
+    "test": "node tests/run.js && node tools/balance.js && node tools/probe.js"
+  },
+  "keywords": [
+    "tower-defense",
+    "game",
+    "canvas"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "jsdom": "^29.1.1"
+  }
+}

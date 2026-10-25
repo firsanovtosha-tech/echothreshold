@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Рубеж Эха — Tower Defense</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <!-- Игровой холст: виден всегда, под ним оверлеи экранов -->
+  <canvas id="game" width="1080" height="600"></canvas>
+
+  <!-- ===== Главное меню ===== -->
+  <section class="screen active" id="screen-menu">
+    <div class="panel">
+      <h1>РУБЕЖ ЭХА</h1>
+      <p class="subtitle">Оборонительная кампания из пяти карт · хроники ⟡ хранятся навсегда, кредиты ₡ — только в бою</p>
+      <div class="btn-row">
+        <button class="primary" id="btn-start">Начать кампанию</button>
+        <button id="btn-open-shop">Магазин хроник</button>
+        <button class="danger" id="btn-reset-save">Сбросить прогресс</button>
+      </div>
+      <h2>Карты кампании</h2>
+      <div id="map-list"></div>
+      <div class="settings">
+        <span id="menu-chronicles" class="chip-chronicles">⟡ 200 хроник</span>
+        <label><input type="checkbox" id="music-toggle"> Музыка</label>
+        <label>Звук <input type="range" id="sfx-volume" min="0" max="1" step="0.05"></label>
+        <span id="total-playtime"></span>
+      </div>
+      <p class="footer-note">«Рубеж Эха» · управление: 1–5 выбор башни, Пробел — волна, P — пауза, ПКМ/Esc — отмена</p>
+    </div>
+  </section>
+
+  <!-- ===== Подготовка к бою (выбор набора 1–5 типов) ===== -->
+  <section class="screen" id="screen-loadout">
+    <div class="panel">
+      <h2 id="loadout-map-title">Карта</h2>
+      <div class="loadout-top">
+        <label>Карта: <select id="loadout-maps"></select></label>
+        <span>Выбрано типов: <b id="loadout-count">5/5</b> (можно от 1 до 5)</span>
+      </div>
+      <p class="subtitle" id="loadout-map-desc"></p>
+      <div class="lg-grid" id="tower-grid"></div>
+      <div class="btn-row">
+        <button class="primary" id="btn-loadout-confirm">В бой!</button>
+        <button id="btn-back-menu">В меню</button>
+      </div>
+      <div class="inline-toast" id="loadout-toast"></div>
+    </div>
+  </section>
+
+  <!-- ===== Магазин разблокировок за хроники ===== -->
+  <section class="screen" id="screen-shop">
+    <div class="panel">
+      <h2>Магазин хроник <span id="shop-chronicles" class="chip-chronicles">⟡ 200</span></h2>
+      <p class="subtitle">Хроники выдаются за победы: первое прохождение карты +210…+330, повторы +20/+10/+5. Покупка списывает хроники ровно один раз и сохраняется навсегда.</p>
+      <div class="lg-grid" id="shop-grid"></div>
+      <div class="btn-row">
+        <button id="btn-shop-back">В меню</button>
+      </div>
+      <div class="inline-toast" id="shop-toast"></div>
+    </div>
+  </section>
+
+  <!-- ===== Экран результатов ===== -->
+  <section class="screen" id="screen-result">
+    <div class="panel">
+      <h1 id="result-title">Итог</h1>
+      <div id="result-body"></div>
+      <div class="btn-row">
+        <button class="primary" id="btn-result-next">Следующая карта</button>
+        <button id="btn-result-retry">Переиграть</button>
+        <button id="btn-result-menu">В меню</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Боевой HUD (виден только в бою, класс in-battle на body) ===== -->
+  <header class="hud-top">
+    <span class="hud-chip" id="hud-credits">₡ 0</span>
+    <span class="hud-chip" id="hud-hp">♥ 20/20</span>
+    <span class="hud-chip" id="hud-wave">Волна 1/10</span>
+    <span class="hud-chip" id="hud-phase">Фаза подготовки</span>
+    <span class="hud-chip battle-map" id="battle-map-name"></span>
+    <span class="hud-right">
+      <button id="btn-target">Цель: Первый</button>
+      <button id="btn-menu" title="Главное меню">☰</button>
+      <button id="btn-speed">1×</button>
+      <button id="btn-pause">⏸ Пауза</button>
+      <button id="btn-quit">Покинуть</button>
+    </span>
+  </header>
+  <button id="btn-wave">▶ Вызвать волну (Пробел)</button>
+  <aside id="tower-panel"></aside>
+
+  <!-- Всплывающие элементы -->
+  <div id="tooltip"></div>
+  <div id="toast"></div>
+</div>
+
+<!-- Порядок загрузки важен: данные → движок → UI → оркестратор -->
+<script src="data/towers.js"></script>
+<script src="data/enemies.js"></script>
+<script src="data/maps.js"></script>
+<script src="engine/save.js"></script>
+<script src="engine/simulation.js"></script>
+<script src="engine/render.js"></script>
+<script src="engine/audio.js"></script>
+<script src="ui/hud.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
